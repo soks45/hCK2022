@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, tap } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Employee } from '../../models/employee';
@@ -35,9 +35,24 @@ export class AuthService {
 
   }
 
-  signInAsUser(username: string, password: string) {
+  signInAsUser(email: string, password: string) {
     return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/login/`, { username, password })
+      .post<EmployeeLoginResult>(`${this.apiUrl}/user/login`, { email, password })
+      .pipe(
+        map((x) => {
+          console.log(x);
+          this._user.next({
+            ...x
+          });
+          this.router.navigate([pages.defaultPage])
+          return x;
+        })
+      );
+  }
+
+  signUpAsUser(email: string, password: string) {
+    return this.http
+      .post<EmployeeLoginResult>(`${this.apiUrl}/user/registration`, { email, password })
       .pipe(
         map((x) => {
           this._user.next({
@@ -49,28 +64,11 @@ export class AuthService {
       );
   }
 
-  signUpAsUser(username: string, password: string) {
+  signInAsOrganization(inn: string, password: string) {
     return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/signup/`, { username, password })
+      .post<EmployeeLoginResult>(`${this.apiUrl}/organization/login`, { inn, password })
       .pipe(
-        map((x) => {
-          this._user.next({
-            ...x
-          });
-          this.router.navigate([pages.defaultPage])
-          return x;
-        })
-      );
-  }
-
-  signInAsOrganization(username: string, password: string) {
-    return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/login/`, { username, password })
-      .pipe(
-        map((x) => {
-          this._user.next({
-            ...x
-          });
+        tap((x) => {
           this.router.navigate([pages.organizationPage])
           return x;
         })
@@ -79,7 +77,7 @@ export class AuthService {
 
   signUpAsOrganization(username: string, password: string) {
     return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/signup/`, { username, password })
+      .post<EmployeeLoginResult>(`${this.apiUrl}/organization/registration`, { username, password })
       .pipe(
         map((x) => {
           this._user.next({

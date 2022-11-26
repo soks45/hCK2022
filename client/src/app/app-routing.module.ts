@@ -4,7 +4,6 @@ import { UnauthorizedGuard } from './auth/guards/unauthorized.guard';
 import { EmployeeGuard } from './auth/guards/employee.guard';
 import { OrganizationGuard } from './auth/guards/organization.guard';
 import { SuperUserGuard } from './auth/guards/super-user.guard';
-import { AuthGuard } from './auth';
 import { InviteGuard } from './auth/guards/invite.guard';
 
 const routes: Routes = [
