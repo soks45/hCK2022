@@ -38,7 +38,7 @@ export class AuthService {
 
 
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login`, { username, password }, { headers })
+      .post<LoginResult>(`${this.apiUrl}/login/`, { username, password }, { headers })
       .pipe(
         map((x) => {
           this._user.next({
