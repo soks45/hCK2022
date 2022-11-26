@@ -1,12 +1,15 @@
+require('dotenv').config()
 const  express = require('express')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/errorHandlerMiddleware')
 const DbService = require('./services/dbConnect')
-
+cookieParser = require('cookie-parser')
 const app = express()
+app.use(cookieParser())
 app.use(express.json())
 app.use('/api', router)
 app.use(errorHandler)
+app.use(cookieParser(process.env.SECRET_KEY))
 const PORT = 8000
 
 const start = async () => {
