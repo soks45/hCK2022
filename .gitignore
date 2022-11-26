@@ -7,8 +7,8 @@ client/out-tsc
 client/bazel-out
 
 # Node
-./client/node_modules
-./server/node_modules
+client/node_modules
+server/node_modules
 client/npm-debug.log
 client/yarn-error.log
 
@@ -30,7 +30,7 @@ client/.vscode/tasks.json
 .history/*
 
 # Miscellaneous
-/.angular/cache
+client/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -31,14 +31,8 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    const headers = new HttpHeaders();
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
-
-
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login/`, { username, password }, { headers })
+      .post<LoginResult>(`${this.apiUrl}/login/`, { username, password })
       .pipe(
         map((x) => {
           this._user.next({
@@ -65,7 +59,7 @@ export class AuthService {
   sessionToken(): Observable<any> {
     if (!this.cookies.getSessionTokenData()) {
       return from(this.router.navigate([pages.login]))
-    };
+    }
 
     return of(null);
   }
