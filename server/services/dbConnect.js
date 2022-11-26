@@ -1,11 +1,11 @@
-import * as mysql from 'mysql';
-import { ConnectionConfig, QueryOptions } from 'mysql';
+const mysql = require('mysql');
+
 
 class DbService {
-    private connection!: mysql.Connection;
-    private inited = false;
+    connection;
+    inited = false;
 
-    init(): void {
+    init() {
         if (this.inited) {
             return;
         }
@@ -14,48 +14,13 @@ class DbService {
         this.inited = true;
     }
 
-    format(sql: string, values: any[], stringifyObjects?: boolean, timeZone?: string): any {
+    format(sql, values, stringifyObjects, timeZone) {
         return mysql.format(sql, values, stringifyObjects, timeZone);
     }
 
-    queryRaw(sql: string | QueryOptions, args?: any): Promise<any> {
-        return this.query(sql, false, args);
-    }
-
-    queryJson(sql: string | QueryOptions, args?: any): Promise<any> {
-        return this.query(sql, true, args);
-    }
-
-    queryTransaction(callback: ((_: any) => Promise<any>), sql: string | QueryOptions, args?: any): Promise<any> {
+    query(sql, jsonResult, args) {
         return new Promise((resolve, reject) => {
-            this.connection.beginTransaction((err) => {
-                if (err) {
-                    reject(err);
-                }
-
-                this.queryJson(sql, args)
-                    .then((value) => {
-                        callback(value)
-                            .then((value) => {
-                                this.connection.commit();
-                                resolve(value);
-                            })
-                            .catch((err) => {
-                                this.connection.rollback();
-                                reject(err);
-                            });
-                    })
-                    .catch((err) => {
-                        this.connection.rollback();
-                        reject(err);
-                    });
-            });
-        });
-    }
-
-    private query(sql: string | QueryOptions, jsonResult: boolean, args?: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            const callback = (err: any, rows: any) => {
+            const callback = (err, rows) => {
                 if (err) {
                     return reject(err);
                 }
@@ -71,7 +36,7 @@ class DbService {
         });
     }
 
-    private initConnection(): void {
+    initConnection() {
         const config = this.getDbConfig();
         this.connection = mysql.createConnection({
             ...config,
@@ -99,8 +64,8 @@ class DbService {
         });
     }
 
-    private getDbConfig(): ConnectionConfig {
-        return <ConnectionConfig> {
+    getDbConfig() {
+        return {
             host: "localhost",
             port: 3306,
             user: "root",
@@ -110,6 +75,4 @@ class DbService {
     }
 }
 
-const instance = new DbService();
-
-export { instance as DbService };
+module.exports = new DbService()
