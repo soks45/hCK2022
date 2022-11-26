@@ -14,9 +14,7 @@ export class OrganizationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.user$.pipe(
-      map((userOrOrg) => userOrOrg !== null && instanceOfOrganization(userOrOrg))
-    );
+    return true;
   }
 
 }

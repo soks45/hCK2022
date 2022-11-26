@@ -1,0 +1,64 @@
+.rounded {
+    counter-reset: li; 
+    list-style: none; 
+    font: 14px "Trebuchet MS", "Lucida Sans";
+    padding: 0;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+
+    width: 785px;
+    height: 42px;
+}
+.rounded div {
+position: relative;
+padding: .4em .4em .4em 2em;
+margin: .5em 0;
+background: #ECECEC;
+color: #444;
+text-decoration: none;
+border-radius: .3em;
+transition: .3s ease-out;
+
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+
+color: #383838;
+}
+
+.rounded li {
+    display: flex;
+    flex-direction: row;
+    width: 785px;
+}
+.rounded div.line{
+    width: 785px;
+    height: 42px;
+}
+.rounded div:hover {background: #E1E1E1;}
+.rounded div.circle {
+    position: relative;
+    transition: all .3s ease-out;
+    background: #99FF99;
+    height: 42px;
+    width: 10px;
+
+    &_Active{
+        background: #99FF99;
+        border-radius: 100px;
+        border: 4px, solid #FFFFFF;
+        right: 50px;
+    }
+    &_Inactive{
+        background: #FFDC99;
+        border-radius: 100px;
+    }
+    &_Deactive{
+        background: #D37F7F;
+        border-radius: 100px;
+    }
+
+}

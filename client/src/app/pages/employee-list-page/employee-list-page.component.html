@@ -1,1 +1,5 @@
-<p>employee-list-page works!</p>
+<ol class="rounded">
+    <ng-container *ngFor = "let employee of employeeList">
+            <li><div class="line">{{employee.name}}</div><div class="circle_{{employee.status}}"></div></li>
+    </ng-container>
+</ol>

@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./employee-list-page.component.scss']
 })
 export class EmployeeListPageComponent {
-
+  employeeList = [{name: "Kamil", status: "Active"}, {name: "Aleksey", status: "Inactive"}, {name: "Danil", status: "Deactive"}];
 }
