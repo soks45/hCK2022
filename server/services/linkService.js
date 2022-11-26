@@ -6,7 +6,6 @@ class linkService {
     }
 
     async generate(request) {
-        // const req = JSON.parse(request)
         const organization_id = request['organization_id']
         const emails = request['emails']
 
