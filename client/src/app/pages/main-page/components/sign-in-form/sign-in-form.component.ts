@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormMixin } from '@mixins/form.mixin';
 import { finalize, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../auth';
+import { MatDialogRef } from '@angular/material/dialog';
 
 interface LoginFormControls {
     emailOrInn: string;
@@ -24,18 +25,19 @@ export class SignInFormComponent extends FormMixin<Constructor, LoginFormControl
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dr: MatDialogRef<any>
   ) {
     super();
     this.formGroup = this.formBuilder.group({
       emailOrInn: new FormControl('', {
-          initialValueIsDefault: true,
-          validators: [Validators.required, Validators.maxLength(255)],
-        }),
-        password: new FormControl('', {
-          initialValueIsDefault: true,
-          validators: [Validators.required, Validators.maxLength(255)],
-        }),
+        initialValueIsDefault: true,
+        validators: [Validators.required, Validators.maxLength(255)],
+      }),
+      password: new FormControl('', {
+        initialValueIsDefault: true,
+        validators: [Validators.required, Validators.maxLength(255)],
+      }),
     });
   }
 
@@ -47,18 +49,20 @@ export class SignInFormComponent extends FormMixin<Constructor, LoginFormControl
 
     const value = this.formGroup.value;
 
-    if (this.isInn(value.emailOrInn)) {
-      return;
-    }
-
-
+    // @ts-ignore
+    this.authService.signInAsUser(value.emailOrInn, value.password)
+      .pipe(
+        tap(console.log),
+        finalize(() => this.dr.close())
+      )
+      .subscribe();
   }
 
-  private isInn(pin: string | undefined): boolean {
+/*  private isInn(pin: string | undefined): boolean {
     if (!pin) {
      return false;
     }
 
     return pin.replace(/[^0-9]/g,"") === pin;
-  }
+  }*/
 }

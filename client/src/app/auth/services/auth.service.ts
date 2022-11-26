@@ -40,6 +40,7 @@ export class AuthService {
       .post<EmployeeLoginResult>(`${this.apiUrl}/user/login`, { email, password })
       .pipe(
         map((x) => {
+          console.log(x);
           this._user.next({
             ...x
           });
