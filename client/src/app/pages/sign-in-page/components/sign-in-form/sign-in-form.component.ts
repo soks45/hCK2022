@@ -43,14 +43,5 @@ export class SignInFormComponent extends FormMixin<Constructor, LoginFormControl
         if (!this.checkForm) {
             return;
         }
-
-        this.isLoading = true;
-        this.authService
-            .login(this.formGroup.get(['username'])!.value, this.formGroup.get(['password'])!.value)
-            .pipe(
-              finalize(() => (this.isLoading = false)),
-              tap(console.log)
-            )
-            .subscribe();
     }
 }

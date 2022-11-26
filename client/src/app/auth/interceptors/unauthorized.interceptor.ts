@@ -8,8 +8,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
@@ -22,7 +22,6 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401) {
-          this.authService.clearLocalStorage();
           this.router.navigate(['login']);
         }
 
