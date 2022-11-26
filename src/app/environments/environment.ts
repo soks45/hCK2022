@@ -4,10 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001',
-  signalRHubs: {
-    Tasks: 'https://localhost:5001/hub/Task',
-  }
+  apiUrl: 'http://localhost:80',
 };
 
 /*

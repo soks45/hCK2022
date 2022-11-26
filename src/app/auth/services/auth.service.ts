@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -21,7 +21,7 @@ enum pages {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = `${environment.apiUrl}/api/account`;
+  private readonly apiUrl = `${environment.apiUrl}/api`;
   private _user = new BehaviorSubject<User | null>(null);
   user$ = this._user.asObservable();
 
@@ -31,8 +31,13 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
+    const headers = new HttpHeaders();
+    headers.append('Access-Control-Allow-Headers', 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'GET');
+    headers.append('Access-Control-Allow-Origin', '*');
+
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login`, { username, password })
+      .post<LoginResult>(`${this.apiUrl}/login`, { username, password }, { headers })
       .pipe(
         map((x) => {
           this._user.next({
