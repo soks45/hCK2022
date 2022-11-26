@@ -1,5 +1,10 @@
-<ngx-loading-bar class="app-root__loading"
-                 [height]="'8px'"
-                 [includeSpinner]="false">
-</ngx-loading-bar>
+<div class="app-root">
+  <ngx-loading-bar class="app-root__loading"
+                   [height]="'8px'"
+                   [includeSpinner]="false">
+  </ngx-loading-bar>
+  <div class="app-root__content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
 
