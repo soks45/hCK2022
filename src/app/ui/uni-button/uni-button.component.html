@@ -1,0 +1,11 @@
+<button
+  type="button"
+  (click)="onClicked($event)"
+  mat-button
+  [color]="color"
+>
+  <div class="spinner" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <ng-content *ngIf="!loading"></ng-content>
+</button>
