@@ -4,17 +4,22 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { User } from '../../models/user';
+import { Employee } from '../../models/employee';
 import { AppCookiesService } from './cookie-service';
+import { Organization } from '../../models/organization';
 
-interface LoginResult extends User {
+interface EmployeeLoginResult extends Employee {
   accessToken: string;
-  refreshToken: string;
+}
+
+interface OrganizationLoginResult extends Organization {
+  accessToken: string;
 }
 
 enum pages {
   login = 'login',
   defaultPage = 'main-page',
+  organizationPage = 'organization-page'
 }
 
 @Injectable({
@@ -22,7 +27,7 @@ enum pages {
 })
 export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/api`;
-  private _user = new BehaviorSubject<User | null>(null);
+  private _user = new BehaviorSubject<Employee | Organization | null>(null);
   user$ = this._user.asObservable();
 
 
@@ -30,15 +35,57 @@ export class AuthService {
 
   }
 
-  login(username: string, password: string) {
+  signInAsUser(username: string, password: string) {
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login/`, { username, password })
+      .post<EmployeeLoginResult>(`${this.apiUrl}/login/`, { username, password })
       .pipe(
         map((x) => {
           this._user.next({
             ...x
           });
           this.router.navigate([pages.defaultPage])
+          return x;
+        })
+      );
+  }
+
+  signUpAsUser(username: string, password: string) {
+    return this.http
+      .post<EmployeeLoginResult>(`${this.apiUrl}/signup/`, { username, password })
+      .pipe(
+        map((x) => {
+          this._user.next({
+            ...x
+          });
+          this.router.navigate([pages.defaultPage])
+          return x;
+        })
+      );
+  }
+
+  signInAsOrganization(username: string, password: string) {
+    return this.http
+      .post<EmployeeLoginResult>(`${this.apiUrl}/login/`, { username, password })
+      .pipe(
+        map((x) => {
+          this._user.next({
+            ...x
+          });
+          this.router.navigate([pages.organizationPage])
+          return x;
+        })
+      );
+  }
+
+  signUpAsOrganization(username: string, password: string) {
+    return this.http
+      .post<EmployeeLoginResult>(`${this.apiUrl}/signup/`, { username, password })
+      .pipe(
+        map((x) => {
+          this._user.next({
+            ...x
+          });
+          this.router.navigate([pages.organizationPage])
           return x;
         })
       );
