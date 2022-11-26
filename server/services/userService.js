@@ -14,7 +14,8 @@ const createJwt = (id) => {
 
 class userService {
     async create(request, cookies, response){
-        const {join_data, is_active, exit_date, full_name, date_of_birth, position, organization_id} = request
+        console.log(request)
+        const {join_data, is_active, exit_date, full_name, date_of_birth, position, organization_id,email,password} = request
         // const req = DbService.format(`INSERT INTO employee(join_data,
         //                                                          is_active,
         //                                                          exit_date,
@@ -29,21 +30,41 @@ class userService {
             full_name,
             date_of_birth,
             position,
-            organization_id)
-            VALUES(?, ?, ?, ?, ?, ?,?)`, [join_data, is_active, exit_date, full_name, date_of_birth, position,organization_id])
+            organization_id,
+            email,
+            password)
+            VALUES(?, ?, ?, ?, ?, ?,?,?,?)`, [join_data, is_active, exit_date, full_name, date_of_birth, position,organization_id, email,password])
             response.body = request
+            console.log(res)
             response.body.employee_id = res.insertId
-            response.cookie('tokensssaaa', createJwt(full_name))
+            response.cookie('token', createJwt(full_name))
             return response.body
         }
         catch (err){
-            return null
+            return response.body = "Error creating user"
+
         }
     }
 
-    async login (request){
-        const token = createJwt(1, 2, 3)
-        return ({token})
+
+    async login (request, response){
+        const {email, password} = request
+        console.log(request)
+        const res = await DbService.queryRaw(`SELECT * FROM employee WHERE (email=? AND password=?)`, [email, password])
+        console.log(res)
+        if(res.length !== 0) {
+            const token = createJwt(res.name)
+            console.log(res)
+            console.log(res[0].organization_id)
+            response.body = request
+            response.body.organization_id = res[0].organization_id
+            response.cookie('token', token)
+            return response.body
+        }
+        else {
+            response.body = "Error"
+            return response.body
+        }
     }
     async updateJwt (id, email, role) {
         const token = createJwt(id, email, role)

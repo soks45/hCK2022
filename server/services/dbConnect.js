@@ -37,6 +37,7 @@ class DbService {
     }
 
     queryRaw (sql, args){
+        console.log(sql)
         return this.query(sql,false,args)
     }
 

@@ -8,7 +8,7 @@ class userController {
     }
 
     async login (request, response, next){
-        const token = await userService.login(request.body)
+        const token = await userService.login(request.body, response)
         return response.json(token)
     }
     async updateJwt (request, response, next) {
