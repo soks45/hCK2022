@@ -32,9 +32,10 @@ export class AuthService {
 
   login(username: string, password: string) {
     const headers = new HttpHeaders();
-    headers.append('Access-Control-Allow-Headers', 'Content-Type');
-    headers.append('Access-Control-Allow-Methods', 'GET');
     headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+
 
     return this.http
       .post<LoginResult>(`${this.apiUrl}/login`, { username, password }, { headers })
