@@ -12,10 +12,9 @@ const createJwt = (id) => {
     )
 }
 
-class userService {
+class organizationService {
     async create(request, cookies, response){
-        console.log(request)
-        const {join_data, is_active, exit_date, full_name, date_of_birth, position, organization_id,email,password} = request
+        const {name, inn, contact_full_name, contact_phone_number, password} = request
         // const req = DbService.format(`INSERT INTO employee(join_data,
         //                                                          is_active,
         //                                                          exit_date,
@@ -24,33 +23,26 @@ class userService {
         //                                                          position)
         //                                            VALUES(?, ?, ?, ?, ?, ?)`, [join_data, is_active, exit_date, full_name, date_of_birth, position])
         try{
-            const res = await DbService.queryRaw(`INSERT INTO employee(join_data,
-            is_active,
-            exit_date,
-            full_name,
-            date_of_birth,
-            position,
-            organization_id,
-            email,
+            const res = await DbService.queryRaw(`INSERT INTO organization(name,
+            inn,
+            contact_full_name,
+            contact_phone_number,
             password)
-            VALUES(?, ?, ?, ?, ?, ?,?,?,?)`, [join_data, is_active, exit_date, full_name, date_of_birth, position,organization_id, email,password])
+            VALUES(?, ?, ?, ?, ?)`, [name, inn, contact_full_name, contact_phone_number, password])
             response.body = request
-            console.log(res)
-            response.body.employee_id = res.insertId
-            response.cookie('token', createJwt(full_name))
+            response.body.organization_id = res.insertId
+            response.cookie('token', createJwt(name))
             return response.body
         }
         catch (err){
-            return response.body = "Error creating user"
-
+            return null
         }
     }
 
 
     async login (request, response){
-        const {email, password} = request
-        console.log(request)
-        const res = await DbService.queryRaw(`SELECT * FROM employee WHERE (email=? AND password=?)`, [email, password])
+        const {inn, password} = request
+        const res = await DbService.queryRaw(`SELECT * FROM organization WHERE inn=? AND password=? AND accepted=TRUE`, [inn, password])
         console.log(res)
         if(res.length !== 0) {
             const token = createJwt(res.name)
@@ -62,7 +54,7 @@ class userService {
             return response.body
         }
         else {
-            response.body = "Error"
+            response.body = "Error no such organization or it is not accepted currently"
             return response.body
         }
     }
@@ -73,4 +65,4 @@ class userService {
 
 }
 
-module.exports = new userService ()
+module.exports = new organizationService()
