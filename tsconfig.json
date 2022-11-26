@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -20,9 +20,44 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": [
-      "ES2022",
+      "ES2021",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@decorators/*": [
+        "app/decorators/*"
+      ],
+      "@guards/*": [
+        "app/guards/*"
+      ],
+      "@interceptors/*": [
+        "app/interceptors/*"
+      ],
+      "@mixins/*": [
+        "app/mixins/*"
+      ],
+      "@pages/*": [
+        "app/pages/*"
+      ],
+      "@services/*": [
+        "app/services/*"
+      ],
+      "@ui/*": [
+        "app/ui/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@environments/*": [
+        "environments/*"
+      ],
+      "@directives/*": [
+        "app/directives/*"
+      ],
+      "@validators/*": [
+        "app/validators/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

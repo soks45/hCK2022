@@ -1,0 +1,17 @@
+.app-root {
+  &__loading {
+    #loading-bar {
+      z-index: 5 !important;
+    }
+
+    .peg {
+      display: none !important;
+    }
+
+    .ngx-bar {
+      background-image: linear-gradient(to right, #237cff, #7baffa) !important;
+      top: 0 !important;
+      height: 4px !important;
+    }
+  }
+}
