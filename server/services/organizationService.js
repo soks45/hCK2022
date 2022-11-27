@@ -23,7 +23,6 @@ class organizationService {
         const contact_full_name = main_data.data.management.name
         let contact_phone_number = undefined
         let password = undefined
-        console.log(contact_full_name)
         try{
             const res = await DbService.queryRaw(`INSERT INTO organization(
                                                         name,
@@ -32,7 +31,6 @@ class organizationService {
                                                         contact_phone_number,
                                                         password)
                                                         VALUES(?, ?, ?, ?, ?)`, [name, request.inn, contact_full_name, contact_phone_number? contact_phone_number: "none", password? password : "none"])
-            console.log(res)
             response.body = request
             response.body.organization_id = res.insertId
             response.cookie('token', createJwt(name))
@@ -54,6 +52,10 @@ class organizationService {
             console.log(res[0].organization_id)
             response.body = request
             response.body.organization_id = res[0].organization_id
+            response.body.name = res[0].name
+            response.body.inn = res[0].inn
+            response.body.contact_full_name = res[0].contact_full_name
+            response.body.contact_phone_number = res[0].contact_phone_number
             response.cookie('token', token)
             return response.body
         }
@@ -62,6 +64,28 @@ class organizationService {
             return response.body
         }
     }
+    async acceptOrg(request, response){
+        const user_id = request.employee_id
+        const organization_id = request.organization_id
+        const res = await DbService.queryRaw(`SELECT is_admin FROM employee WHERE employee_id=?`, [user_id])
+        console.log(res)
+        if (res){
+            const res = await DbService.queryRaw(`UPDATE organization SET accepted = 1 WHERE organization_id=?`, [organization_id ])
+        }
+        return
+    }
+
+    async rejectOrg(request, response){
+        const user_id = request.employee_id
+        const organization_id = request.organization_id
+        const res = await DbService.queryRaw(`SELECT is_admin FROM employee WHERE employee_id=?`, [user_id])
+        console.log(res)
+        if (res){
+            const res = await DbService.queryRaw(`UPDATE organization SET accepted = 0 WHERE organization_id=?`, [organization_id])
+        }
+        return
+    }
+
     async updateJwt (id, email, role) {
         const token = createJwt(id, email, role)
         return ({token})

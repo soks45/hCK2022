@@ -4,7 +4,11 @@ const router = require('./routes/index')
 const errorHandler = require('./middleware/errorHandlerMiddleware')
 const DbService = require('./services/dbConnect')
 cookieParser = require('cookie-parser')
+const cors = require('cors');
 const app = express()
+
+
+app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
 app.use(cookieParser())
 app.use(express.json())
 app.use('/api', router)
