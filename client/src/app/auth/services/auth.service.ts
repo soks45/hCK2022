@@ -40,7 +40,6 @@ export class AuthService {
       .post<EmployeeLoginResult>(`${this.apiUrl}/user/login`, { email, password })
       .pipe(
         map((x) => {
-          console.log(x);
           this._user.next({
             ...x
           });
@@ -66,7 +65,7 @@ export class AuthService {
 
   signInAsOrganization(inn: string, password: string) {
     return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/organization/login`, { inn, password })
+      .post<OrganizationLoginResult>(`${this.apiUrl}/organization/login`, { inn, password })
       .pipe(
         tap((x) => {
           this.router.navigate([pages.organizationPage])
@@ -77,7 +76,7 @@ export class AuthService {
 
   signUpAsOrganization(username: string, password: string) {
     return this.http
-      .post<EmployeeLoginResult>(`${this.apiUrl}/organization/registration`, { username, password })
+      .post<OrganizationLoginResult>(`${this.apiUrl}/organization/registration`, { username, password })
       .pipe(
         map((x) => {
           this._user.next({
