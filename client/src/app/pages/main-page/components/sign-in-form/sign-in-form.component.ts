@@ -8,15 +8,15 @@ import { AuthService } from '../../../../auth';
 import { MatDialogRef } from '@angular/material/dialog';
 
 interface LoginFormControls {
-    emailOrInn: string;
-    password: string;
+  emailOrInn: string;
+  password: string;
 }
 
 @Component({
-    selector: 'app-sign-in-form',
-    templateUrl: './sign-in-form.component.html',
-    styleUrls: ['./sign-in-form.component.scss'],
-    encapsulation: ViewEncapsulation.None,
+  selector: 'app-sign-in-form',
+  templateUrl: './sign-in-form.component.html',
+  styleUrls: ['./sign-in-form.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SignInFormComponent extends FormMixin<Constructor, LoginFormControls>(BaseObject) {
   isLoading = false;
@@ -46,11 +46,11 @@ export class SignInFormComponent extends FormMixin<Constructor, LoginFormControl
         return;
     }
 
-
     const value = this.formGroup.value;
-
+    const asOrganization = this.isInn(value.emailOrInn);
     // @ts-ignore
-    this.authService.signInAsUser(value.emailOrInn, value.password)
+    const request$ = asOrganization ? this.authService.signInAsOrganization(value.emailOrInn, value.password) : this.authService.signInAsUser(value.emailOrInn, value.password);
+    request$
       .pipe(
         tap(console.log),
         finalize(() => this.dr.close())
@@ -58,11 +58,11 @@ export class SignInFormComponent extends FormMixin<Constructor, LoginFormControl
       .subscribe();
   }
 
-/*  private isInn(pin: string | undefined): boolean {
+  private isInn(pin: string | undefined): boolean {
     if (!pin) {
      return false;
     }
 
     return pin.replace(/[^0-9]/g,"") === pin;
-  }*/
+  }
 }
