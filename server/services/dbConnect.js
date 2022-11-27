@@ -36,6 +36,11 @@ class DbService {
         });
     }
 
+    queryRaw (sql, args){
+        console.log(sql)
+        return this.query(sql,false,args)
+    }
+
     initConnection() {
         const config = this.getDbConfig();
         this.connection = mysql.createConnection({

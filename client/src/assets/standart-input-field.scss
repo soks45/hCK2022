@@ -1,0 +1,23 @@
+.standart-input-field{
+    background: radial-gradient(206.96% 1702.33% at 51.32% 206.96%, #E4E4E4 0%, #F4F4F4 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 100%;
+    /* or 32px */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.12em;
+    text-indent: 10px;
+
+    color: #383838;
+
+    border: 0mm;
+
+    width: 455px;
+    height: 79px;
+}

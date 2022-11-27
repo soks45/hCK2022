@@ -2,13 +2,13 @@ const userService = require('../../services/userService')
 
 
 class userController {
-    async create(request, response,next){
-        const token = await userService.create(request.body)
-        return response.json(token)
+    async create(request, response){
+        const result = await userService.create(request.body, request.cookies, response)
+        return response.json(result)
     }
 
     async login (request, response, next){
-        const token = await userService.login(request.body)
+        const token = await userService.login(request.body, response)
         return response.json(token)
     }
 

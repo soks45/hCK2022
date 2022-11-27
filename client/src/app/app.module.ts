@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { CoreModule } from './auth/core.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
     BrowserAnimationsModule,
     LoadingBarHttpClientModule,
     LoadingBarRouterModule,
-    LoadingBarModule
+    LoadingBarModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
