@@ -17,6 +17,38 @@ class userController {
         return response.json({token})
     }
 
+    async getUsers(request, response, next) {
+        const activatedUsers = await userService.getActivatedUsers(request.query)
+        const registerLinks = await userService.getRegisterLinks(request.query)
+
+        let users = []
+
+        activatedUsers.forEach(u => {
+            users.push({
+                'full_name': u["full_name"],
+                'status': u["status"]
+            })
+        })
+
+        registerLinks.forEach(l => {
+            let found = false
+            users.forEach(u => {
+                if(l["email"] == u["email"]) {
+                    found = true
+                }
+            })
+
+            if(!found) {
+                users.push({
+                    'full_name': l["email"],
+                    'status': l["status"]
+                })
+            }
+        })
+
+        return response.json({users})
+    }
+
 }
 
 module.exports = new userController ()
