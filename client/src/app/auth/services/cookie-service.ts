@@ -14,6 +14,7 @@ export class AppCookiesService {
     if (!token) {
       return;
     }
+    console.log(this.cookie.getAll());
 
     return token;
   }
